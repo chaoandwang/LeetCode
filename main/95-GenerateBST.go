@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	. "LeetCode/main/base"
+	. "LeetCode/main/container"
+)
+
 
 /*
 给定一个整数 n，生成所有由 1 ... n 为节点所组成的二叉搜索树。
@@ -29,13 +34,6 @@ import "fmt"
 链接：https://leetcode-cn.com/problems/unique-binary-search-trees-ii
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
-
-//Definition for a binary tree node.
-type TreeNode struct {
-    Val int
-    Left *TreeNode
-    Right *TreeNode
-}
 
 func generate(interval, n int) []*TreeNode {
 	if n < 1 {
@@ -75,48 +73,22 @@ func generateTrees(n int) []*TreeNode {
 	return generate(0, n)
 }
 
-type queue struct {
-	 que []interface{}
-	 index int
-}
-
-func (q *queue) push(i interface{}) {
-	q.que = append(q.que, i)
-}
-
-func (q *queue) pop() interface{} {
-	q.index += 1
-	ret := q.que[q.index]
-	return ret
-}
-
-func (q *queue) isEmpty() bool {
-	if len(q.que) == q.index + 1 {
-		return true
-	}
-	return false
-}
-
-func newQueue() *queue {
-	return &queue{que:make([]interface{}, 0), index:-1}
-}
-
 func printTree(root *TreeNode) []string {
 	if root == nil {
 		return []string{"nil"}
 	}
 	desc := make([]string, 0)
-	que := newQueue()
-	que.push(root)
-	for !que.isEmpty() {
-		tmp := que.pop().(*TreeNode)
+	que := NewQueue()
+	que.Push(root)
+	for !que.IsEmpty() {
+		tmp := que.Pop().(*TreeNode)
 		if tmp != nil {
 			desc = append(desc, fmt.Sprintf("%d", tmp.Val))
 			if tmp.Left == nil && tmp.Right == nil {
 				continue
 			}
-			que.push(tmp.Left)
-			que.push(tmp.Right)
+			que.Push(tmp.Left)
+			que.Push(tmp.Right)
 		} else {
 			desc = append(desc, fmt.Sprint("nil"))
 		}
