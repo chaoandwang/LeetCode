@@ -9,6 +9,14 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+func (n *TreeNode)IsLeaf() bool {
+	if n == nil {return false}
+	if n.Left == nil && n.Right == nil {
+		return true
+	}
+	return false
+}
+
 func InorderTravel(root *TreeNode) []int {
 	if root == nil {
 		return []int{}
@@ -101,9 +109,9 @@ func postOrderTraverInternal(root *TreeNode, travel *[]int) {
 	*travel = append(*travel, root.Val)
 }
 
-type treeNodeStackElement struct {
-	node *TreeNode
-	isLeft bool
+type TreeNodeStackElement struct {
+	Node *TreeNode
+	IsLeft bool
 }
 
 func PostOrderTraverWithOutRecursion(root *TreeNode) []int {
@@ -112,19 +120,19 @@ func PostOrderTraverWithOutRecursion(root *TreeNode) []int {
 	}
 	stack := container.NewStack()
 	travel := make([]int, 0)
-	var nodeElment treeNodeStackElement
+	var nodeElment TreeNodeStackElement
 	for root != nil || !stack.IsEmpty() {
 		if root != nil {
-			stack.Push(treeNodeStackElement{node:root,isLeft:true})
+			stack.Push(TreeNodeStackElement{Node:root,IsLeft:true})
 			root = root.Left
 		} else {
-			nodeElment = stack.Pop().(treeNodeStackElement)
-			if nodeElment.isLeft {
-				nodeElment.isLeft = false
+			nodeElment = stack.Pop().(TreeNodeStackElement)
+			if nodeElment.IsLeft {
+				nodeElment.IsLeft = false
 				stack.Push(nodeElment)
-				root = nodeElment.node.Right
+				root = nodeElment.Node.Right
 			} else {
-				travel = append(travel, nodeElment.node.Val)
+				travel = append(travel, nodeElment.Node.Val)
 				root = nil
 			}
 		}
